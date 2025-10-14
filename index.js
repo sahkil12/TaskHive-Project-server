@@ -20,6 +20,13 @@ async function run() {
     const taskCollection = db.collection('tasks');
     const userCollection = db.collection('users');
     
+    // get task
+    app.get('/addTasks', async (req, res)=>{
+      const tasks = taskCollection.find()
+      const result = await tasks.toArray()
+      res.send(result) 
+    })
+    
     // post task
     app.post('/addTasks', async(req, res)=>{
         const task = req.body;
