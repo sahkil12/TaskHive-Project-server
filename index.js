@@ -19,19 +19,20 @@ async function run() {
     const db = client.db('TaskHive');
     const taskCollection = db.collection('tasks');
     const userCollection = db.collection('users');
-
+    
     // post task
-                    
+    app.post('/addTasks', async(req, res)=>{
+        const task = req.body;
+        const result = await taskCollection.insertOne(task);
+        res.send(result)
+    })
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
    
-  
   }
 }
 run().catch(console.dir);
-
-
 
 app.get('/', (req, res)=>{
     res.send("TaskHive Make There Server Successfully")
@@ -40,7 +41,6 @@ app.get('/', (req, res)=>{
 app.listen(port, ()=>{
     console.log(`TaskHive Server Port Running on ${port}`);
 })
-
 
 // sCOdHDDPZ3fZ0WZP
 // TaskHive_plartform
