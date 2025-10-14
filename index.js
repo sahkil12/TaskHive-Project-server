@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express(); 
 require('dotenv').config()
 const port = process.env.PORT || 3000;
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 // middleware
 app.use(cors())
 app.use(express.json())
@@ -21,14 +21,27 @@ async function run() {
     const userCollection = db.collection('users');
     
     // get task
-    app.get('/addTasks', async (req, res)=>{
+    app.get('/tasks', async (req, res)=>{
       const tasks = taskCollection.find()
       const result = await tasks.toArray()
       res.send(result) 
     })
-    
+    // get task with user email
+    app.get('/myPostTasks/:email', async(req, res)=>{
+        const email = req.params.email;
+        const query = {email:email}
+        const result =await taskCollection.find(query).toArray()
+        res.send(result)  
+    })   
+    // find one task 
+    app.get('/task/:id', async(req, res)=>{
+        const id = req.params.id;
+        const query = {_id:new ObjectId(id)}
+        const task = await taskCollection.findOne(query)
+        res.send(task)
+    })
     // post task
-    app.post('/addTasks', async(req, res)=>{
+    app.post('/tasks', async(req, res)=>{
         const task = req.body;
         const result = await taskCollection.insertOne(task);
         res.send(result)
