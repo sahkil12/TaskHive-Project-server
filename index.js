@@ -18,7 +18,6 @@ async function run() {
     await client.connect();
     const db = client.db('TaskHive');
     const taskCollection = db.collection('tasks');
-    const userCollection = db.collection('users');
     
     // get task
     app.get('/tasks', async (req, res)=>{
@@ -50,6 +49,25 @@ async function run() {
     app.post('/tasks', async(req, res)=>{
         const task = req.body;
         const result = await taskCollection.insertOne(task);
+        res.send(result)
+    })
+    // updated task 
+    app.put('/tasks/:id', async(req, res)=>{
+        const id = req.params.id;
+        const filter = {_id: new ObjectId(id)}
+        const task = req.body;
+        const option = {upsert: true}
+        const updatedTask = {
+            $set: {
+                title: task.title,
+                category: task.category,
+                deadline: task.deadline,
+                budget: task.budget,
+                country: task.country,
+                details: task.details
+            }
+        }
+        const result = await taskCollection.updateOne(filter, updatedTask, option)
         res.send(result)
     })
     // delete my task
