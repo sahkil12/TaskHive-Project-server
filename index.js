@@ -18,7 +18,6 @@ async function run() {
     await client.connect();
     const db = client.db('TaskHive');
     const taskCollection = db.collection('tasks');
-    
     // get task
     app.get('/tasks', async (req, res)=>{
       const tasks = taskCollection.find()
@@ -92,6 +91,3 @@ app.get('/', (req, res)=>{
 app.listen(port, ()=>{
     console.log(`TaskHive Server Port Running on ${port}`);
 })
-
-// sCOdHDDPZ3fZ0WZP
-// TaskHive_plartform
