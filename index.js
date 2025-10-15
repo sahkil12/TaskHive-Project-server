@@ -26,6 +26,12 @@ async function run() {
       const result = await tasks.toArray()
       res.send(result) 
     })
+    // get 6 task for featured section
+    app.get('/featuredTasks', async (req, res)=>{
+        const tasks = taskCollection.find().limit(6)
+        const result = await tasks.toArray()
+        res.send(result) 
+      })
     // get task with user email
     app.get('/myPostTasks/:email', async(req, res)=>{
         const email = req.params.email;
